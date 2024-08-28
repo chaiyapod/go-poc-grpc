@@ -71,5 +71,5 @@ func main() {
 	})
 
 	app.Get("/", getData)
-	log.Fatal(app.Listen(":3001"))
+	log.Fatal(app.Listen(":3000"))
 }

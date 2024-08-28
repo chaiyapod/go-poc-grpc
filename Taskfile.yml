@@ -20,3 +20,7 @@ tasks:
       - go run client/main.go
   docker-http:
       - docker build . -f Dockerfile-http -t poc-http
+  docker-grpc:
+      - docker build . -f Dockerfile-grpc -t poc-grpc
+  docker-client:
+      - docker build . -f Dockerfile-client -t poc-client
