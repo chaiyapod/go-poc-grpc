@@ -19,8 +19,8 @@ tasks:
     cmds:
       - go run client/main.go
   docker-http:
-      - docker build . -f Dockerfile-http -t poc-http
+      - docker build . -f Dockerfile-http -t gcr.io/friend-dive-375416/poc-http --platform linux/amd64
   docker-grpc:
-      - docker build . -f Dockerfile-grpc -t poc-grpc
+      - docker build . -f Dockerfile-grpc -t gcr.io/friend-dive-375416/poc-grpc --platform linux/amd64
   docker-client:
-      - docker build . -f Dockerfile-client -t poc-client
+      - docker build . -f Dockerfile-client -t gcr.io/friend-dive-375416/poc-client --platform linux/amd64

@@ -26,7 +26,7 @@ func getByHttp(ctx *fiber.Ctx) error {
 	resp, err := client.
 		NewRequest().
 		SetHeader("Content-Type", "application/json").
-		Get("http://localhost:3000/")
+		Get("https://poc-http-zcjkqsokeq-uc.a.run.app")
 	elapsed := time.Since(start)
 
 	if err != nil {
@@ -49,7 +49,7 @@ func getByHttp(ctx *fiber.Ctx) error {
 }
 
 func getByGrpc(fiberCtx *fiber.Ctx) error {
-	conn, err := grpc.NewClient("localhost:50051", grpc.WithTransportCredentials(insecure.NewCredentials()), grpc.WithDefaultCallOptions(
+	conn, err := grpc.NewClient("https://poc-grpc-zcjkqsokeq-as.a.run.app", grpc.WithTransportCredentials(insecure.NewCredentials()), grpc.WithDefaultCallOptions(
 		grpc.MaxCallRecvMsgSize(10*1024*1024), // 10 MB
 		grpc.MaxCallSendMsgSize(10*1024*1024), // 10 MB
 	))
