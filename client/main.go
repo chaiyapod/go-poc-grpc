@@ -2,10 +2,14 @@ package main
 
 import (
 	"context"
+	"encoding/json"
+	"fmt"
 	"log"
+	"net/http"
 	pb "poc/proto"
 	"time"
 
+	"github.com/go-resty/resty/v2"
 	"github.com/gofiber/fiber/v2"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
@@ -15,9 +19,31 @@ type Response struct {
 	Data []*pb.Data `json:"data"`
 }
 
-func getByHttp(ctx *fiber.Ctx) error {
+var client = resty.New()
 
-	return ctx.Status(200).JSON("res")
+func getByHttp(ctx *fiber.Ctx) error {
+	fmt.Println("call")
+	resp, err := client.
+		NewRequest().
+		SetHeader("Content-Type", "application/json").
+		Get("http://localhost:3000/")
+
+	if err != nil {
+		return ctx.Status(400).JSON(err)
+	}
+
+	if resp.StatusCode() != http.StatusOK {
+		fmt.Println("error")
+		return ctx.Status(resp.StatusCode()).JSON(resp.Error())
+	}
+
+	data := Response{}
+
+	if err = json.Unmarshal(resp.Body(), &data); err != nil {
+		return ctx.Status(400).JSON(err)
+	}
+
+	return ctx.Status(200).JSON(data)
 }
 
 func getByGrpc(fiberCtx *fiber.Ctx) error {
