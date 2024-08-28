@@ -22,15 +22,17 @@ type Response struct {
 var client = resty.New()
 
 func getByHttp(ctx *fiber.Ctx) error {
-	fmt.Println("call")
+	start := time.Now()
 	resp, err := client.
 		NewRequest().
 		SetHeader("Content-Type", "application/json").
 		Get("http://localhost:3000/")
+	elapsed := time.Since(start)
 
 	if err != nil {
 		return ctx.Status(400).JSON(err)
 	}
+	fmt.Println("[HTTP] request took %s", elapsed)
 
 	if resp.StatusCode() != http.StatusOK {
 		fmt.Println("error")
@@ -59,7 +61,13 @@ func getByGrpc(fiberCtx *fiber.Ctx) error {
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
+
+	start := time.Now()
+
 	res, err := c.GetSkuData(ctx, &pb.HelloRequest{})
+
+	elapsed := time.Since(start)
+	fmt.Println("[gRPC] request took %s", elapsed)
 	if err != nil {
 		log.Fatalf("could not get sku data: %v", err)
 	}
@@ -71,11 +79,8 @@ func getByGrpc(fiberCtx *fiber.Ctx) error {
 
 func main() {
 	app := fiber.New(fiber.Config{
-		Prefork:       true,
-		CaseSensitive: true,
-		StrictRouting: true,
-		ServerHeader:  "Fiber",
-		AppName:       "Poc",
+		ServerHeader: "Fiber",
+		AppName:      "Poc",
 	})
 
 	app.Get("/http", getByHttp)

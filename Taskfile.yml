@@ -18,3 +18,5 @@ tasks:
   client:
     cmds:
       - go run client/main.go
+  docker-http:
+      - docker build . -f Dockerfile-http -t poc-http

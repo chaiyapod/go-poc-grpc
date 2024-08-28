@@ -67,13 +67,9 @@ func getData(ctx *fiber.Ctx) error {
 }
 func main() {
 	app := fiber.New(fiber.Config{
-		Prefork:       true,
-		CaseSensitive: true,
-		StrictRouting: true,
-		ServerHeader:  "Fiber",
-		AppName:       "Poc",
+		AppName: "Poc",
 	})
 
 	app.Get("/", getData)
-	log.Fatal(app.Listen(":3000"))
+	log.Fatal(app.Listen(":3001"))
 }
