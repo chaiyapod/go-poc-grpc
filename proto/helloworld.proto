@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+package poc;
+
+option go_package = "pb";
+
+service Hello {
+  rpc GetHello (HelloRequest) returns (HelloResponse) {}
+}
+
+
+message HelloRequest {
+  string name = 1;
+}
+
+message HelloResponse {
+  repeated Data data = 1;
+}
+
+message Data {
+  string guid = 1;
+  string product_guid = 2;
+  string category_guid = 3;
+  string seller_id = 4;
+  int32 seller_sku_id = 5;
+  string code = 6;
+  string slug = 7;
+  string name = 8;
+  string description = 9;
+  string selling_size = 10;
+  string selling_unit = 11;
+  int64 conversion_volumn = 12;
+  string conversion_unit = 13;
+  string contain_amount = 14;
+  string contain_amount_unit = 15;
+  int32 seq_no = 16;
+  string visibility_scope = 17;
+}
