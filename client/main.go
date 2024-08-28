@@ -12,7 +12,7 @@ import (
 	"github.com/go-resty/resty/v2"
 	"github.com/gofiber/fiber/v2"
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials/insecure"
+	"google.golang.org/grpc/credentials"
 )
 
 type Response struct {
@@ -26,7 +26,7 @@ func getByHttp(ctx *fiber.Ctx) error {
 	resp, err := client.
 		NewRequest().
 		SetHeader("Content-Type", "application/json").
-		Get("https://poc-http-zcjkqsokeq-uc.a.run.app")
+		Get("https://poc-http-zcjkqsokeq-as.a.run.app")
 	elapsed := time.Since(start)
 
 	if err != nil {
@@ -49,7 +49,8 @@ func getByHttp(ctx *fiber.Ctx) error {
 }
 
 func getByGrpc(fiberCtx *fiber.Ctx) error {
-	conn, err := grpc.NewClient("https://poc-grpc-zcjkqsokeq-as.a.run.app", grpc.WithTransportCredentials(insecure.NewCredentials()), grpc.WithDefaultCallOptions(
+
+	conn, err := grpc.NewClient("poc-grpc-zcjkqsokeq-as.a.run.app", grpc.WithTransportCredentials(credentials.NewClientTLSFromCert(nil, "")), grpc.WithDefaultCallOptions(
 		grpc.MaxCallRecvMsgSize(10*1024*1024), // 10 MB
 		grpc.MaxCallSendMsgSize(10*1024*1024), // 10 MB
 	))
@@ -59,7 +60,7 @@ func getByGrpc(fiberCtx *fiber.Ctx) error {
 	defer conn.Close()
 	c := pb.NewHelloClient(conn)
 
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second*120)
 	defer cancel()
 
 	start := time.Now()
