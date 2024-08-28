@@ -1,27 +1,18 @@
 package main
 
 import (
-	"context"
-	"flag"
-	"fmt"
 	"log"
-	"net"
-
 	pb "poc/proto"
 	"poc/shared"
 
-	"google.golang.org/grpc"
+	"github.com/gofiber/fiber/v2"
 )
 
-var (
-	port = flag.Int("port", 50051, "The server port")
-)
-
-type server struct {
-	pb.UnimplementedHelloServer
+type Response struct {
+	Data []*pb.Data `json:"data"`
 }
 
-func (s *server) GetData(ctx context.Context, in *pb.HelloRequest) (*pb.HelloResponse, error) {
+func getData(ctx *fiber.Ctx) error {
 	skus := shared.ReadCsvData()
 
 	dataRes := []*pb.Data{}
@@ -65,25 +56,24 @@ func (s *server) GetData(ctx context.Context, in *pb.HelloRequest) (*pb.HelloRes
 			DeliveryTimePlusDay:      sku.DeliveryTimePlusDay,
 			IsSellByWeight:           sku.IsSellByWeight,
 		})
-
 	}
 
-	return &pb.HelloResponse{Data: dataRes}, nil
+	res := Response{
+		Data: dataRes,
+	}
+
+	return ctx.Status(200).JSON(res)
+
 }
-
 func main() {
-	flag.Parse()
-	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", *port))
-	if err != nil {
-		log.Fatalf("failed to listen: %v", err)
-	}
+	app := fiber.New(fiber.Config{
+		Prefork:       true,
+		CaseSensitive: true,
+		StrictRouting: true,
+		ServerHeader:  "Fiber",
+		AppName:       "Poc",
+	})
 
-	s := grpc.NewServer()
-	pb.RegisterHelloServer(s, &server{})
-
-	log.Printf("server listening at %v", lis.Addr())
-
-	if err := s.Serve(lis); err != nil {
-		log.Fatalf("failed to serve: %v", err)
-	}
+	app.Get("/", getData)
+	log.Fatal(app.Listen(":3000"))
 }

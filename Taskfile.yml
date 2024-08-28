@@ -9,7 +9,10 @@ tasks:
   genpb:
     cmds:
       - ./tools/bin/proto-sdk
-  serve-grpc:
+  grpc:
     cmds:
       - go run gRPC/main.go
+  http:
+    cmds:
+      - go run http/main.go
   
