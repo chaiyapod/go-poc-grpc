@@ -15,4 +15,6 @@ tasks:
   http:
     cmds:
       - go run http/main.go
-  
+  client:
+    cmds:
+      - go run client/main.go

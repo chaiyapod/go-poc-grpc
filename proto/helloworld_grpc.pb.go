@@ -19,14 +19,14 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Hello_GetData_FullMethodName = "/helloworldga.Hello/GetData"
+	Hello_GetSkuData_FullMethodName = "/helloworld.Hello/GetSkuData"
 )
 
 // HelloClient is the client API for Hello service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type HelloClient interface {
-	GetData(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (*HelloResponse, error)
+	GetSkuData(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (*HelloResponse, error)
 }
 
 type helloClient struct {
@@ -37,10 +37,10 @@ func NewHelloClient(cc grpc.ClientConnInterface) HelloClient {
 	return &helloClient{cc}
 }
 
-func (c *helloClient) GetData(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (*HelloResponse, error) {
+func (c *helloClient) GetSkuData(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (*HelloResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(HelloResponse)
-	err := c.cc.Invoke(ctx, Hello_GetData_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, Hello_GetSkuData_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -51,7 +51,7 @@ func (c *helloClient) GetData(ctx context.Context, in *HelloRequest, opts ...grp
 // All implementations must embed UnimplementedHelloServer
 // for forward compatibility.
 type HelloServer interface {
-	GetData(context.Context, *HelloRequest) (*HelloResponse, error)
+	GetSkuData(context.Context, *HelloRequest) (*HelloResponse, error)
 	mustEmbedUnimplementedHelloServer()
 }
 
@@ -62,8 +62,8 @@ type HelloServer interface {
 // pointer dereference when methods are called.
 type UnimplementedHelloServer struct{}
 
-func (UnimplementedHelloServer) GetData(context.Context, *HelloRequest) (*HelloResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetData not implemented")
+func (UnimplementedHelloServer) GetSkuData(context.Context, *HelloRequest) (*HelloResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetSkuData not implemented")
 }
 func (UnimplementedHelloServer) mustEmbedUnimplementedHelloServer() {}
 func (UnimplementedHelloServer) testEmbeddedByValue()               {}
@@ -86,20 +86,20 @@ func RegisterHelloServer(s grpc.ServiceRegistrar, srv HelloServer) {
 	s.RegisterService(&Hello_ServiceDesc, srv)
 }
 
-func _Hello_GetData_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Hello_GetSkuData_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(HelloRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(HelloServer).GetData(ctx, in)
+		return srv.(HelloServer).GetSkuData(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Hello_GetData_FullMethodName,
+		FullMethod: Hello_GetSkuData_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(HelloServer).GetData(ctx, req.(*HelloRequest))
+		return srv.(HelloServer).GetSkuData(ctx, req.(*HelloRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -108,12 +108,12 @@ func _Hello_GetData_Handler(srv interface{}, ctx context.Context, dec func(inter
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var Hello_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "helloworldga.Hello",
+	ServiceName: "helloworld.Hello",
 	HandlerType: (*HelloServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "GetData",
-			Handler:    _Hello_GetData_Handler,
+			MethodName: "GetSkuData",
+			Handler:    _Hello_GetSkuData_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

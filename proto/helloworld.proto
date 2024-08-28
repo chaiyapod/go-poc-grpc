@@ -1,11 +1,11 @@
 syntax = "proto3";
 
-package helloworldga;
+package helloworld;
 
 option go_package = "pb/";
 
 service Hello {
-  rpc GetData (HelloRequest) returns (HelloResponse) {}
+  rpc GetSkuData (HelloRequest) returns (HelloResponse) {}
 }
 
 

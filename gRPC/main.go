@@ -21,7 +21,7 @@ type server struct {
 	pb.UnimplementedHelloServer
 }
 
-func (s *server) GetData(ctx context.Context, in *pb.HelloRequest) (*pb.HelloResponse, error) {
+func (s *server) GetSkuData(ctx context.Context, in *pb.HelloRequest) (*pb.HelloResponse, error) {
 	skus := shared.ReadCsvData()
 
 	dataRes := []*pb.Data{}
