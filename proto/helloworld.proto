@@ -5,12 +5,13 @@ package helloworldga;
 option go_package = "pb/";
 
 service Hello {
-  rpc GetHello (HelloRequest) returns (HelloResponse) {}
+  rpc GetData (HelloRequest) returns (HelloResponse) {}
 }
 
 
 message HelloRequest {
-  string name = 1;
+  string name1 = 1;
+  string name2 = 2;
 }
 
 message HelloResponse {
@@ -22,17 +23,36 @@ message Data {
   string product_guid = 2;
   string category_guid = 3;
   string seller_id = 4;
-  int32 seller_sku_id = 5;
+  string seller_sku_id = 5;
   string code = 6;
   string slug = 7;
   string name = 8;
   string description = 9;
   string selling_size = 10;
   string selling_unit = 11;
-  int64 conversion_volumn = 12;
+  string conversion_volume = 12;
   string conversion_unit = 13;
   string contain_amount = 14;
   string contain_amount_unit = 15;
-  int32 seq_no = 16;
+  string seq_no = 16;
   string visibility_scope = 17;
+  string created_at = 18;
+  string created_by = 19;
+  string updated_at = 20;
+  string updated_by = 21;
+  string deleted_at = 22;
+  string deleted_by = 23;
+  string delivery_time_slot_end = 24;
+  string delivery_time_slot_start = 25;
+  string promo_code_applicable_level = 26;
+  string is_split_order = 27;
+  string delivery_date_end = 28;
+  string delivery_date_start = 29;
+  string trading_type = 30;
+  string purchase_type = 31;
+  string delivery_temperature = 32;
+  string remaining_amount = 33;
+  string quota_limit_status = 34;
+  string delivery_time_plus_day = 35;
+  string is_sell_by_weight = 36;
 }
