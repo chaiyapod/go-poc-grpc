@@ -1,0 +1,12 @@
+version: '3'
+
+env:
+  ENV: local
+
+dotenv: ['.env']
+
+tasks:
+  genpb:
+    cmds:
+      - ./tools/bin/proto-sdk
+  
